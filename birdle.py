@@ -1,44 +1,66 @@
 import random
 import tkinter as tk
 
-def read_words(filename):
+def read_birds(filename):
     with open(filename, 'r') as file:
-        words = file.read().split()
-    return words
+        birds = file.read().split()
+    return birds
 
-def get_word(words):
-    return random.choice(words)
+def get_bird(birds):
+    return random.choice(birds)
 
-def check_guess(guess, word):
+def check_guess(guess, bird):
     guess = guess.lower()
-    word = word.lower()
-    if len(guess) != len(word):
-        return False
-    for i in range(len(guess)):
-        if guess[i] != word[i] and guess[i] in word:
-            print(f"{guess[i]} is a correct letter, but it's in the wrong position.")
-        elif guess[i] != word[i]:
-            print(f"{guess[i]} is not in the word.")
-        else:
-            print(f"{guess[i]} is a correct letter in the correct position.")
-    return guess == word
+    bird = bird.lower()
+    return guess == bird
 
 def main():
-    words = read_words("words.txt")
-    word = get_word(words)
-    guesses = 0
-    while guesses < 6:
-        guess = input("Enter a five-letter guess: ")
-        if guess == "e": #Exit shortcut TODO: remove
-            break
-        if check_guess(guess, word):
-            print(f"Congratulations! You guessed the word '{word}' in {guesses + 1} guesses!")
-            break
-        else:
-            guesses += 1
-            print(f"Sorry, that guess is incorrect. You have {6 - guesses} guesses remaining.")
-    else:
-        print(f"Sorry, you didn't guess the word '{word}'. The word was '{word}'. Better luck next time!")
+    birds = read_birds("birds.txt")
+    bird = get_bird(birds)
+    
+    win = tk.Tk()
+    win.title("Birdle")
+    win.geometry("480x600")
+
+    mf = tk.Frame(win) # main frame
+    mf.pack(fill="both", padx=10, pady=10)
+    
+    title = tk.Label(mf, text="Birdle")
+    title.pack()
+    
+    def handle_submission(event):
+        text = entry.get()
+        if text:
+            if check_guess(text, bird):
+                print("Correct!")
+                entry.config(state="disabled")
+            else:
+                print("Incorrect!")
+                entry.delete(0, tk.END)
+
+    entry = tk.Entry(mf)
+    entry.pack()
+    entry.bind('<Return>', handle_submission)
+
+    submit = tk.Button(mf, text="Submit")
+    submit.pack()
+    submit.bind("<Button-1>", handle_submission)
+    
+    win.mainloop()
+    
+    # guesses = 0
+    # while guesses < 6:
+    #     guess = input("Enter a five-letter guess: ")
+    #     if guess == "e": #Exit shortcut TODO: remove
+    #         break
+    #     if check_guess(guess, word):
+    #         print(f"Congratulations! You guessed the word '{word}' in {guesses + 1} guesses!")
+    #         break
+    #     else:
+    #         guesses += 1
+    #         print(f"Sorry, that guess is incorrect. You have {6 - guesses} guesses remaining.")
+    # else:
+    #     print(f"Sorry, you didn't guess the word '{word}'. The word was '{word}'. Better luck next time!")
     
 if __name__ == "__main__":
     main()
