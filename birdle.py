@@ -25,42 +25,55 @@ def main():
     mf = tk.Frame(win) # main frame
     mf.pack(fill="both", padx=10, pady=10)
     
-    title = tk.Label(mf, text="Birdle")
-    title.pack()
-    
+    tk.Label(mf, text="Birdle").pack()
+
+    sf = tk.Frame(mf) # submissions frame
+    sf.pack()
+
+    submitEntry = tk.Entry(sf)
+    submitEntry.grid(row=6, column=0, padx=2)
+
+    submitBtn = tk.Button(sf, text="Submit")
+    submitBtn.grid(row=6, column=1, padx=2)
+
+    remGuesses = 6
+    remLbl = tk.Label(mf, text="You have 6 guesses remaining.")
+    remLbl.pack()
+
     def handle_submission(event):
-        text = entry.get()
-        if text:
-            if check_guess(text, bird):
-                print("Correct!")
-                entry.config(state="disabled")
+        nonlocal remGuesses
+        guess = submitEntry.get()
+
+        def log_guess(isCorrect):
+            nonlocal remGuesses, guess
+
+            tk.Label(sf, text=guess).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
+            tk.Label(sf, text=(u'\u2713' if isCorrect else "X")).grid(row=6-remGuesses, column=1)
+
+        def disable():
+            submitEntry.config(state="disabled")
+            submitBtn.config(state="disabled")
+
+        if guess:
+            if check_guess(guess, bird):
+                log_guess(True)
+                remLbl.config(text="Correct!")
+                disable()
+            elif remGuesses > 1:
+                log_guess(False)
+                remGuesses -= 1
+                remLbl.config(text="Incorrect! You have {} guesses remaining.".format(remGuesses))
+                submitEntry.delete(0, tk.END)
             else:
-                print("Incorrect!")
-                entry.delete(0, tk.END)
+                log_guess(False)
+                remLbl.config(text="Incorrect! Better luck next time!")
+                submitEntry.delete(0, tk.END)
+                disable()
 
-    entry = tk.Entry(mf)
-    entry.pack()
-    entry.bind('<Return>', handle_submission)
-
-    submit = tk.Button(mf, text="Submit")
-    submit.pack()
-    submit.bind("<Button-1>", handle_submission)
+    submitEntry.bind('<Return>', handle_submission)
+    submitBtn.bind("<Button-1>", handle_submission)
     
     win.mainloop()
-    
-    # guesses = 0
-    # while guesses < 6:
-    #     guess = input("Enter a five-letter guess: ")
-    #     if guess == "e": #Exit shortcut TODO: remove
-    #         break
-    #     if check_guess(guess, word):
-    #         print(f"Congratulations! You guessed the word '{word}' in {guesses + 1} guesses!")
-    #         break
-    #     else:
-    #         guesses += 1
-    #         print(f"Sorry, that guess is incorrect. You have {6 - guesses} guesses remaining.")
-    # else:
-    #     print(f"Sorry, you didn't guess the word '{word}'. The word was '{word}'. Better luck next time!")
     
 if __name__ == "__main__":
     main()
