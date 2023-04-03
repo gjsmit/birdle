@@ -1,13 +1,11 @@
+import json
 import random
 import tkinter as tk
 
-def read_birds(filename):
-    with open(filename, 'r') as file:
-        birds = file.read().split()
-    return birds
-
-def get_bird(birds):
-    return random.choice(birds)
+def get_bird_data():
+    with open('birds.json', 'r') as file:
+        bird_data = random.choice(json.load(file)['species'])
+    return bird_data
 
 def check_guess(guess, bird):
     guess = guess.lower()
@@ -15,8 +13,8 @@ def check_guess(guess, bird):
     return guess == bird
 
 def main():
-    birds = read_birds("birds.txt")
-    bird = get_bird(birds)
+    bird_data = get_bird_data()
+    bird = bird_data['common_name']
     
     win = tk.Tk()
     win.title("Birdle")
@@ -26,6 +24,9 @@ def main():
     mf.pack(fill="both", padx=10, pady=10)
     
     tk.Label(mf, text="Birdle").pack()
+
+    hf = tk.Frame(mf) # hint frame
+    hf.pack()
 
     sf = tk.Frame(mf) # submissions frame
     sf.pack()
@@ -51,6 +52,7 @@ def main():
             tk.Label(sf, text=(u'\u2713' if isCorrect else "X")).grid(row=6-remGuesses, column=1)
 
         def disable():
+            submitEntry.delete(0, tk.END)
             submitEntry.config(state="disabled")
             submitBtn.config(state="disabled")
 
@@ -67,7 +69,6 @@ def main():
             else:
                 log_guess(False)
                 remLbl.config(text="Incorrect! Better luck next time!")
-                submitEntry.delete(0, tk.END)
                 disable()
 
     submitEntry.bind('<Return>', handle_submission)

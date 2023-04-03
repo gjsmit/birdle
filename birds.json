@@ -1,0 +1,55 @@
+{
+    "species": [
+      {
+        "common_name": "American Robin",
+        "scientific_name": "Turdus migratorius",
+        "habitat": "Forests, woodlands, fields, and gardens",
+        "diet": "Omnivorous, eats insects, fruits, and worms",
+        "length": "9-11 in (23-28 cm)",
+        "wingspan": "12-16 in (31-41 cm)",
+        "picture": "american_robin.jpg",
+        "song": "american_robin.mp3"
+      },
+      {
+        "common_name": "Black-capped Chickadee",
+        "scientific_name": "Poecile atricapillus",
+        "habitat": "Forests, woodlands, and suburban areas",
+        "diet": "Omnivorous, eats insects, seeds, and berries",
+        "length": "4.5-5 in (12-13 cm)",
+        "wingspan": "6.5-8.5 in (17-22 cm)",
+        "picture": "black_capped_chickadee.jpg",
+        "song": "black_capped_chickadee.mp3"
+      },
+      {
+        "common_name": "Mourning Dove",
+        "scientific_name": "Zenaida macroura",
+        "habitat": "Open areas, fields, and suburban areas",
+        "diet": "Seed-eaters, also eats some insects",
+        "length": "11-13 in (28-33 cm)",
+        "wingspan": "18-21 in (46-53 cm)",
+        "picture": "mourning_dove.jpg",
+        "song": "mourning_dove.mp3"
+      },
+      {
+        "common_name": "American Goldfinch",
+        "scientific_name": "Spinus tristis",
+        "habitat": "Fields, gardens, and suburban areas",
+        "diet": "Seed-eaters, primarily feeds on thistle seeds",
+        "length": "4.5-5 in (11-13 cm)",
+        "wingspan": "7.5-8.5 in (19-22 cm)",
+        "picture": "american_goldfinch.jpg",
+        "song": "american_goldfinch.mp3"
+      },
+      {
+        "common_name": "Blue Jay",
+        "scientific_name": "Cyanocitta cristata",
+        "habitat": "Forests, woodlands, and suburban areas",
+        "diet": "Omnivorous, eats insects, seeds, and fruits",
+        "length": "9-12 in (30 cm)",
+        "wingspan": "13-17 in (34-43 cm)",
+        "picture": "blue_jay.jpg",
+        "song": "blue_jay.mp3"
+      }
+    ]
+  }
+  
