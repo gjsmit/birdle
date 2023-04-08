@@ -1,6 +1,7 @@
 import json
 import random
 import tkinter as tk
+from PIL import Image,ImageTk
 
 def get_bird_data():
     with open('birds.json', 'r') as file:
@@ -25,8 +26,57 @@ def main():
     
     tk.Label(mf, text="Birdle").pack()
 
-    hf = tk.Frame(mf) # hint frame
-    hf.pack()
+    ohf = tk.Frame(mf) # outer hint frame
+    ohf.pack()
+
+    pc = tk.Canvas(ohf, width=100, height=100) # picture canvas
+    pc.pack()
+
+    # display image
+    imgDir = "images/"
+    try:
+        img = ImageTk.PhotoImage(Image.open(imgDir+bird_data['picture']).resize((100,100), Image.ANTIALIAS))
+    except:
+        img = ImageTk.PhotoImage(Image.open(imgDir+"stock.png").resize((100,100), Image.ANTIALIAS))
+    pc.create_image(0,0, anchor=tk.NW, image=img)
+
+    cf = tk.Frame(ohf)  # song/call frame
+    cf.pack()
+
+    thf = tk.Frame(ohf) # text hints frame
+    thf.pack()
+
+    tk.Label(thf, text="Scientific Name:").grid(row=0, column=0, sticky="e")
+    tk.Label(thf, text="Habitat:").grid(row=1, column=0, sticky="e")
+    tk.Label(thf, text="Diet:").grid(row=2, column=0, sticky="e")
+    tk.Label(thf, text="Length:").grid(row=3, column=0, sticky="e")
+    tk.Label(thf, text="Wingspan:").grid(row=4, column=0, sticky="e")
+
+    tk.Label(thf, text=bird_data['scientific_name']).grid(row=0, column=1, sticky="w")
+    tk.Label(thf, text=bird_data['habitat']).grid(row=1, column=1, sticky="w")
+    tk.Label(thf, text=bird_data['diet']).grid(row=2, column=1, sticky="w")
+    tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
+    tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
+
+    # ihf = tk.Frame(ohf) # inner hint frame
+    # ihf.pack()
+
+    # bf = tk.Frame(ohf) # button frame
+    # bf.pack()
+
+    # # buttons to switch between hints
+    # btn1 = tk.Button(bf, text="1")
+    # btn2 = tk.Button(bf, text="2")
+    # btn3 = tk.Button(bf, text="3")
+    # btn4 = tk.Button(bf, text="4")
+    # btn5 = tk.Button(bf, text="5")
+    # btn6 = tk.Button(bf, text="6")
+    # btn1.grid(column=0, row=0)
+    # btn2.grid(column=1, row=0)
+    # btn3.grid(column=2, row=0)
+    # btn4.grid(column=3, row=0)
+    # btn5.grid(column=4, row=0)
+    # btn6.grid(column=5, row=0)
 
     sf = tk.Frame(mf) # submissions frame
     sf.pack()
