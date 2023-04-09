@@ -24,21 +24,21 @@ def main():
     mf = tk.Frame(win) # main frame
     mf.pack(fill="both", padx=10, pady=10)
     
-    tk.Label(mf, text="Birdle").pack()
+    tk.Label(mf, text="Birdle", font="bold").pack()
 
-    ohf = tk.Frame(mf) # outer hint frame
+    ohf = tk.Frame(mf, pady=30) # outer hint frame
     ohf.pack()
 
     pc = tk.Canvas(ohf, width=100, height=100) # picture canvas
     pc.pack()
 
     # display image
-    imgDir = "images/"
     try:
-        img = ImageTk.PhotoImage(Image.open(imgDir+bird_data['picture']).resize((100,100), Image.ANTIALIAS))
+        img = ImageTk.PhotoImage(Image.open("images/birds/"+bird_data['picture']).resize((100,100), Image.LANCZOS))
     except:
-        img = ImageTk.PhotoImage(Image.open(imgDir+"stock.png").resize((100,100), Image.ANTIALIAS))
-    pc.create_image(0,0, anchor=tk.NW, image=img)
+        img = ImageTk.PhotoImage(Image.open("images/stock.png").resize((100,100), Image.LANCZOS))
+    preimg = ImageTk.PhotoImage(Image.open("images/stock.png").resize((100,100), Image.LANCZOS)) # TODO: set to unknown
+    pc.create_image(0,0, anchor=tk.NW, image=preimg)
 
     cf = tk.Frame(ohf)  # song/call frame
     cf.pack()
@@ -53,30 +53,6 @@ def main():
     tk.Label(thf, text="Wingspan:").grid(row=4, column=0, sticky="e")
 
     tk.Label(thf, text=bird_data['scientific_name']).grid(row=0, column=1, sticky="w")
-    tk.Label(thf, text=bird_data['habitat']).grid(row=1, column=1, sticky="w")
-    tk.Label(thf, text=bird_data['diet']).grid(row=2, column=1, sticky="w")
-    tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
-    tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
-
-    # ihf = tk.Frame(ohf) # inner hint frame
-    # ihf.pack()
-
-    # bf = tk.Frame(ohf) # button frame
-    # bf.pack()
-
-    # # buttons to switch between hints
-    # btn1 = tk.Button(bf, text="1")
-    # btn2 = tk.Button(bf, text="2")
-    # btn3 = tk.Button(bf, text="3")
-    # btn4 = tk.Button(bf, text="4")
-    # btn5 = tk.Button(bf, text="5")
-    # btn6 = tk.Button(bf, text="6")
-    # btn1.grid(column=0, row=0)
-    # btn2.grid(column=1, row=0)
-    # btn3.grid(column=2, row=0)
-    # btn4.grid(column=3, row=0)
-    # btn5.grid(column=4, row=0)
-    # btn6.grid(column=5, row=0)
 
     sf = tk.Frame(mf) # submissions frame
     sf.pack()
@@ -101,8 +77,24 @@ def main():
             tk.Label(sf, text=guess).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
             tk.Label(sf, text=(u'\u2713' if isCorrect else "X")).grid(row=6-remGuesses, column=1)
 
+        def show_hint():
+            nonlocal remGuesses
+            
+            if (remGuesses == 6):
+                tk.Label(thf, text=bird_data['habitat']).grid(row=1, column=1, sticky="w")
+            elif (remGuesses == 5):
+                tk.Label(thf, text=bird_data['diet']).grid(row=2, column=1, sticky="w")
+            elif (remGuesses == 4):
+                tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
+                tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
+            elif (remGuesses == 3):
+                print("mp3 handling")
+            else:
+                pc.create_image(0,0, anchor=tk.NW, image=img)
+
         def disable():
             submitEntry.delete(0, tk.END)
+            submitEntry.insert(0, bird_data['common_name'])
             submitEntry.config(state="disabled")
             submitBtn.config(state="disabled")
 
@@ -113,6 +105,7 @@ def main():
                 disable()
             elif remGuesses > 1:
                 log_guess(False)
+                show_hint()
                 remGuesses -= 1
                 remLbl.config(text="Incorrect! You have {} guesses remaining.".format(remGuesses))
                 submitEntry.delete(0, tk.END)
