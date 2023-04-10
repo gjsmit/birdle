@@ -1,8 +1,14 @@
 # Birdle
-Wordle spinoff where users guess a species of bird each day. This personal project is in the early stages of development. 
+Wordle spinoff where users guess a species of bird each day.
 
-### Current Plans
-- Develop a Python GUI initially, possibly port to a website after
-- Reveal more information about the bird each guess (song, distribution, genus, etc)
-  - Inform users if their guess shares characteristics with the bird
-- Track statistics of returning users
+I plan to initially develop this program using Python; notably, using the tkinter framework. When that is complete, I hope to port the game to a website using React or a similar framework.
+
+## To-Do
+[x] Check and display guesses
+[x] Read bird data from JSON file
+[x] Reveal hints for each guess
+[x] Display list of valid guesses
+[ ] Convert submission combobox to smart autofill
+[ ] Build MP3 player for song/call hints
+[ ] Track statistics of returning users
+[ ] Revamp UI

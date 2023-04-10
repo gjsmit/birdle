@@ -1,12 +1,18 @@
 import json
 import random
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image,ImageTk
 
-def get_bird_data():
+def get_bird():
     with open('birds.json', 'r') as file:
         bird_data = random.choice(json.load(file)['species'])
     return bird_data
+
+def get_bird_names():
+    with open('birds.json', 'r') as file:
+        bird_names = [bird['common_name'] for bird in json.load(file)['species']]
+    return bird_names
 
 def check_guess(guess, bird):
     guess = guess.lower()
@@ -14,7 +20,7 @@ def check_guess(guess, bird):
     return guess == bird
 
 def main():
-    bird_data = get_bird_data()
+    bird_data = get_bird()
     bird = bird_data['common_name']
     
     win = tk.Tk()
@@ -57,7 +63,10 @@ def main():
     sf = tk.Frame(mf) # submissions frame
     sf.pack()
 
-    submitEntry = tk.Entry(sf)
+    guess = tk.StringVar()
+
+    submitEntry = ttk.Combobox(sf, textvariable=guess)
+    submitEntry['values'] = get_bird_names()
     submitEntry.grid(row=6, column=0, padx=2)
 
     submitBtn = tk.Button(sf, text="Submit")
@@ -68,13 +77,12 @@ def main():
     remLbl.pack()
 
     def handle_submission(event):
-        nonlocal remGuesses
-        guess = submitEntry.get()
+        nonlocal remGuesses, guess
 
         def log_guess(isCorrect):
             nonlocal remGuesses, guess
 
-            tk.Label(sf, text=guess).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
+            tk.Label(sf, text=guess.get()).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
             tk.Label(sf, text=(u'\u2713' if isCorrect else "X")).grid(row=6-remGuesses, column=1)
 
         def show_hint():
@@ -98,16 +106,19 @@ def main():
             submitEntry.config(state="disabled")
             submitBtn.config(state="disabled")
 
-        if guess:
-            if check_guess(guess, bird):
+        if guess.get():
+            if check_guess(guess.get(), bird):
                 log_guess(True)
+                while remGuesses > 1:
+                    show_hint()
+                    remGuesses -= 1
                 remLbl.config(text="Correct!")
                 disable()
             elif remGuesses > 1:
                 log_guess(False)
                 show_hint()
                 remGuesses -= 1
-                remLbl.config(text="Incorrect! You have {} guesses remaining.".format(remGuesses))
+                remLbl.config(text="Incorrect! You have {} guess{} remaining.".format(remGuesses, "" if remGuesses == 1 else "es"))
                 submitEntry.delete(0, tk.END)
             else:
                 log_guess(False)
