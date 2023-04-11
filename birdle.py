@@ -20,8 +20,10 @@ def check_guess(guess, bird):
     return guess == bird
 
 def main():
+
     bird_data = get_bird()
     bird = bird_data['common_name']
+    bird_names = get_bird_names()
     
     win = tk.Tk()
     win.title("Birdle")
@@ -66,8 +68,20 @@ def main():
     guess = tk.StringVar()
 
     submitEntry = ttk.Combobox(sf, textvariable=guess)
-    submitEntry['values'] = get_bird_names()
+    submitEntry['values'] = bird_names
     submitEntry.grid(row=6, column=0, padx=2)
+
+    def get_autofill(event):
+        keys = event.widget.get()
+        if keys == '': data = bird_names
+        else:
+            data = []
+            for item in bird_names:
+                if keys.lower() in item.lower():
+                    data.append(item)
+        submitEntry['values'] = data
+
+    submitEntry.bind('<KeyRelease>', get_autofill)
 
     submitBtn = tk.Button(sf, text="Submit")
     submitBtn.grid(row=6, column=1, padx=2)
