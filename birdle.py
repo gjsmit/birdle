@@ -67,7 +67,7 @@ def main():
 
     guess = tk.StringVar()
 
-    submitEntry = ttk.Combobox(sf, textvariable=guess)
+    submitEntry = ttk.Combobox(sf, textvariable=guess, height=10, width=len(max(bird_names, key=len))+3)
     submitEntry['values'] = bird_names
     submitEntry.grid(row=6, column=0, padx=2)
 
@@ -95,21 +95,23 @@ def main():
 
         def log_guess(isCorrect):
             nonlocal remGuesses, guess
-
-            tk.Label(sf, text=guess.get()).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
+            adj_guess = guess.get()
+            if adj_guess == "": adj_guess = "skipped..."
+            
+            tk.Label(sf, text=adj_guess).grid(row=6-remGuesses, column=0, sticky="w", ipadx=1)
             tk.Label(sf, text=(u'\u2713' if isCorrect else "X")).grid(row=6-remGuesses, column=1)
 
         def show_hint():
             nonlocal remGuesses
             
-            if (remGuesses == 6):
+            if remGuesses == 6:
                 tk.Label(thf, text=bird_data['habitat']).grid(row=1, column=1, sticky="w")
-            elif (remGuesses == 5):
+            elif remGuesses == 5:
                 tk.Label(thf, text=bird_data['diet']).grid(row=2, column=1, sticky="w")
-            elif (remGuesses == 4):
+            elif remGuesses == 4:
                 tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
                 tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
-            elif (remGuesses == 3):
+            elif remGuesses == 3:
                 print("mp3 handling")
             else:
                 pc.create_image(0,0, anchor=tk.NW, image=img)
@@ -120,24 +122,25 @@ def main():
             submitEntry.config(state="disabled")
             submitBtn.config(state="disabled")
 
-        if guess.get():
-            if check_guess(guess.get(), bird):
-                log_guess(True)
-                while remGuesses > 1:
-                    show_hint()
-                    remGuesses -= 1
-                remLbl.config(text="Correct!")
-                disable()
-            elif remGuesses > 1:
-                log_guess(False)
+        if remGuesses < 1:
+            return
+        elif check_guess(guess.get(), bird):
+            log_guess(True)
+            while remGuesses > 1:
                 show_hint()
                 remGuesses -= 1
-                remLbl.config(text="Incorrect! You have {} guess{} remaining.".format(remGuesses, "" if remGuesses == 1 else "es"))
-                submitEntry.delete(0, tk.END)
-            else:
-                log_guess(False)
-                remLbl.config(text="Incorrect! Better luck next time!")
-                disable()
+            remLbl.config(text="Correct!")
+            disable()
+        elif remGuesses > 1:
+            log_guess(False)
+            show_hint()
+            remGuesses -= 1
+            remLbl.config(text="Incorrect! You have {} guess{} remaining.".format(remGuesses, "" if remGuesses == 1 else "es"))
+            submitEntry.delete(0, tk.END)
+        else:
+            log_guess(False)
+            remLbl.config(text="Incorrect! Better luck next time!")
+            disable()
 
     submitEntry.bind('<Return>', handle_submission)
     submitBtn.bind("<Button-1>", handle_submission)
