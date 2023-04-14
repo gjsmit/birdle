@@ -37,15 +37,15 @@ def main():
     ohf = tk.Frame(mf, pady=30) # outer hint frame
     ohf.pack()
 
-    pc = tk.Canvas(ohf, width=100, height=100) # picture canvas
+    pc = tk.Canvas(ohf, width=150, height=150) # picture canvas
     pc.pack()
 
     # display image
     try:
-        img = ImageTk.PhotoImage(Image.open("images/birds/"+bird_data['picture']).resize((100,100), Image.LANCZOS))
+        img = ImageTk.PhotoImage(Image.open("images/birds/"+bird_data['picture']).resize((150,150), Image.LANCZOS))
     except:
-        img = ImageTk.PhotoImage(Image.open("images/stock.png").resize((100,100), Image.LANCZOS))
-    preimg = ImageTk.PhotoImage(Image.open("images/stock.png").resize((100,100), Image.LANCZOS)) # TODO: set to unknown
+        img = ImageTk.PhotoImage(Image.open("images/stock.png").resize((150,150), Image.LANCZOS))
+    preimg = ImageTk.PhotoImage(Image.open("images/unknown.png").resize((150,150), Image.LANCZOS)) # TODO: set to unknown
     pc.create_image(0,0, anchor=tk.NW, image=preimg)
 
     cf = tk.Frame(ohf)  # song/call frame
@@ -140,6 +140,7 @@ def main():
         else:
             log_guess(False)
             remLbl.config(text="Incorrect! Better luck next time!")
+            remGuesses -= 1
             disable()
 
     submitEntry.bind('<Return>', handle_submission)
