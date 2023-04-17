@@ -122,8 +122,13 @@ def main():
             submitEntry.config(state="disabled")
             submitBtn.config(state="disabled")
 
+        submitEntry['values'] = bird_names
+        
         if remGuesses < 1:
             return
+        elif guess.get() not in bird_names:
+            submitEntry.event_generate('<KeyRelease>')
+            submitEntry.event_generate('<Down>')
         elif check_guess(guess.get(), bird):
             log_guess(True)
             while remGuesses > 1:
