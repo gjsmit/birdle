@@ -57,9 +57,9 @@ def main():
 
     tk.Label(thf, text="Scientific Name:").grid(row=0, column=0, sticky="e")
     tk.Label(thf, text="Habitat:").grid(row=1, column=0, sticky="e")
-    tk.Label(thf, text="Diet:").grid(row=2, column=0, sticky="e")
-    tk.Label(thf, text="Length:").grid(row=3, column=0, sticky="e")
-    tk.Label(thf, text="Wingspan:").grid(row=4, column=0, sticky="e")
+    tk.Label(thf, text="Length:").grid(row=2, column=0, sticky="e")
+    tk.Label(thf, text="Wingspan:").grid(row=3, column=0, sticky="e")
+    tk.Label(thf, text="Diet:").grid(row=4, column=0, sticky="e")
 
     tk.Label(thf, text=bird_data['scientific_name']).grid(row=0, column=1, sticky="w")
 
@@ -108,10 +108,10 @@ def main():
             if remGuesses == 6:
                 tk.Label(thf, text=bird_data['habitat']).grid(row=1, column=1, sticky="w")
             elif remGuesses == 5:
-                tk.Label(thf, text=bird_data['diet']).grid(row=2, column=1, sticky="w")
+                tk.Label(thf, text=bird_data['length']).grid(row=2, column=1, sticky="w")
+                tk.Label(thf, text=bird_data['wingspan']).grid(row=3, column=1, sticky="w")
             elif remGuesses == 4:
-                tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
-                tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
+                tk.Label(thf, text=bird_data['diet']).grid(row=4, column=1, sticky="w")
             elif remGuesses == 3:
                 tk.Label(cf, text="MP3 player coming soon...").pack()
             else:
