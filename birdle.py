@@ -28,6 +28,7 @@ def main():
     win = tk.Tk()
     win.title("Birdle")
     win.geometry("480x600")
+    win.iconbitmap("images/logo.ico")
 
     mf = tk.Frame(win) # main frame
     mf.pack(fill="both", padx=10, pady=10)
@@ -112,7 +113,7 @@ def main():
                 tk.Label(thf, text=bird_data['length']).grid(row=3, column=1, sticky="w")
                 tk.Label(thf, text=bird_data['wingspan']).grid(row=4, column=1, sticky="w")
             elif remGuesses == 3:
-                print("mp3 handling")
+                tk.Label(cf, text="MP3 player coming soon...").pack()
             else:
                 pc.create_image(0,0, anchor=tk.NW, image=img)
 
@@ -139,6 +140,7 @@ def main():
         elif remGuesses > 1:
             log_guess(False)
             show_hint()
+            bird_names.remove(guess.get())
             remGuesses -= 1
             remLbl.config(text="Incorrect! You have {} guess{} remaining.".format(remGuesses, "" if remGuesses == 1 else "es"))
             submitEntry.delete(0, tk.END)
