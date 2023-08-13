@@ -5,12 +5,12 @@ from tkinter import ttk
 from PIL import Image,ImageTk
 
 def get_bird():
-    with open('birds.json', 'r') as file:
+    with open('./birds.json', 'r') as file:
         bird_data = random.choice(json.load(file)['species'])
     return bird_data
 
 def get_bird_names():
-    with open('birds.json', 'r') as file:
+    with open('./birds.json', 'r') as file:
         bird_names = [bird['common_name'] for bird in json.load(file)['species']]
     return bird_names
 
@@ -46,7 +46,7 @@ def main():
         img = ImageTk.PhotoImage(Image.open("images/birds/"+bird_data['picture']).resize((150,150), Image.LANCZOS))
     except:
         img = ImageTk.PhotoImage(Image.open("images/stock.png").resize((150,150), Image.LANCZOS))
-    preimg = ImageTk.PhotoImage(Image.open("images/unknown.png").resize((150,150), Image.LANCZOS)) # TODO: set to unknown
+    preimg = ImageTk.PhotoImage(Image.open("images/unknown.png").resize((150,150), Image.LANCZOS))
     pc.create_image(0,0, anchor=tk.NW, image=preimg)
 
     cf = tk.Frame(ohf)  # song/call frame
